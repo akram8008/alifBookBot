@@ -5,6 +5,7 @@ import (
 	dataBase "alifLibrary/crud"
 	"flag"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"net"
 	"net/http"
@@ -47,8 +48,16 @@ func start (addr string) {
 
 	go log.Fatal(http.ListenAndServe(addr,  nil))
 
+	admin := betypes.User{
+		ChatId: betypes.AdminChatId,
+		FirstName: betypes.AdminFirstName,
+		Phone:betypes.AdminPhone,
+		Role:betypes.AdminRole,
+	}
+
 	updates := bot.ListenForWebhook("/" + bot.Token)
 	for update := range updates {
+		log.Println(dataBase.IsUserExist(db,admin))
 		log.Printf("%+v\n", update)
 	}
 }

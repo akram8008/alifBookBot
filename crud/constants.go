@@ -6,7 +6,7 @@ createTable = `CREATE TABLE IF NOT EXISTS   users (
    chatid             INTEGER,
    firstname          TEXT NOT NULL,	
    phone              TEXT NOT NULL,
-   role               TEXT NOT NULL,
+   role               TEXT NOT NULL
 );
 `
 

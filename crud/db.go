@@ -13,7 +13,7 @@ func Connect () *sql.DB {
 
 	db, err := sql.Open("sqlite3", "sqLite.DB")
 	if err != nil {
-		log.Fatalf("can't open crud: %v", err)
+		log.Fatalf("can't open sqlite3: %v", err)
 	}
 
 	log.Print("recreate tables if not exist in database")
