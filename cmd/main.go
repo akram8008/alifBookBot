@@ -57,6 +57,11 @@ func start (addr string) {
 
 	updates := bot.ListenForWebhook("/" + bot.Token)
 	for update := range updates {
+		if update.Message == nil {
+			continue
+		}
+		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Вам было предоставленно доступ к библиотеке!")
+		bot.Send(msg)
 		log.Println(dataBase.IsUserExist(db,admin))
 		log.Printf("%+v\n", update)
 	}
