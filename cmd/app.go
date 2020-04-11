@@ -1,5 +1,5 @@
 package main
-
+/*
 import (
 	"alifLibrary/betypes"
 	dataBase "alifLibrary/crud"
@@ -32,4 +32,4 @@ func newMessage (update tgbotapi.Update,bot *tgbotapi.BotAPI, db *sql.DB) {
 
 func sendErrorMessage (bot *tgbotapi.BotAPI, chatId int64) {
 	msg = tgbotapi.NewMessage(chatId, "Серевер не доступенно! повторите попоезже!")
-}
+}*/
