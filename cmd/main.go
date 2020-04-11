@@ -32,14 +32,14 @@ func main () {
 	port := os.Getenv(betypes.EnvPort)
 
 
-	start(betypes.BotWebhook + ":" + port)
+	start(":"+port)
 }
 
 
 
 
 func start (addr string) {
-	log.Println(addr)
+
 	go log.Fatal(http.ListenAndServe(addr,  nil))
 
 
