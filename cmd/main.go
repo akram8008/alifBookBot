@@ -76,7 +76,7 @@ func botConnect (addr string) *tgbotapi.BotAPI {
 	}
 	log.Printf("Authorized bot api - %s", bot.Self.UserName)
 
-	_, err = bot.SetWebhook(tgbotapi.NewWebhook(addr+"/"+betypes.BotToken))
+	_, err = bot.SetWebhook(tgbotapi.NewWebhook(betypes.BotWebhook+addr+"/"+betypes.BotToken))
 	if err != nil {
 		log.Fatal("Can't connect set webhook of telegram-bot",err)
 	}
