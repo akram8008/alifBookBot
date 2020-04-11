@@ -6,3 +6,6 @@ CREATE TABLE IF NOT EXISTS users
     phone     TEXT NOT NULL,
     role      TEXT NOT NULL
 );
+
+
+SELECT * FROM users WHERE chatid=5;

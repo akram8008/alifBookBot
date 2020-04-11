@@ -11,5 +11,5 @@ createTable = `CREATE TABLE IF NOT EXISTS   users (
 `
 
 insertNewUser = `INSERT INTO users(firstname, phone, role)  VALUES (?, ?, ?);`
-userExists = `SELECT id FROM users WHERE phone=?;`
+userExists = `SELECT * FROM users WHERE chatid=?;`
 )

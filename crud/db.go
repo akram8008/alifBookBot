@@ -30,7 +30,7 @@ func Connect () *sql.DB {
 		Role:betypes.AdminRole,
 	}
 
-	ok,err := IsUserExist(db,admin)
+	_,ok,err := IsUserExist(db,admin)
 	if err!=nil {
 		log.Fatal("Can not check main admin for exists")
 	}
@@ -46,16 +46,17 @@ func Connect () *sql.DB {
 }
 
 
-func IsUserExist (db *sql.DB, user betypes.User) (bool,error) {
-	var id int
-	err := db.QueryRow(userExists, user.Phone).Scan(&id)
+func IsUserExist (db *sql.DB, chechUser betypes.User) (betypes.User,bool,error) {
+	user := betypes.User{}
+	err := db.QueryRow(userExists, chechUser.ChatId).Scan(&user.Id,&user.ChatId,&user.FirstName,&user.Phone,&user.Role)
+
 	if err == nil {
-		return true,nil
+		return user,true,nil
 	}
 	if err == sql.ErrNoRows {
-		return false,nil
+		return betypes.User{},false,nil
 	}
-	return false,err
+	return betypes.User{},false,err
 }
 
 

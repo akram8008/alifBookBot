@@ -43,29 +43,32 @@ func main () {
 
 func start (addr string) {
 
+	go log.Fatal(http.ListenAndServe(addr,  nil))
+
+
 	db := dataBase.Connect()
 	bot := botConnect()
 
-	go log.Fatal(http.ListenAndServe(addr,  nil))
 
-	admin := betypes.User{
-		ChatId: betypes.AdminChatId,
-		FirstName: betypes.AdminFirstName,
-		Phone:betypes.AdminPhone,
-		Role:betypes.AdminRole,
-	}
 
-	updates := bot.ListenForWebhook("/" + bot.Token)
+	updates := bot.ListenForWebhook("/")
 	for update := range updates {
-		if update.Message == nil {
-			continue
+	if _,err :=bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID,update.Message.Text));err!=nil {
+		admin := betypes.User{ChatId:461795511}
+		admin,ok,err := dataBase.IsUserExist(db,admin)
+		log.Println(admin,ok,err)
+	}
+		/*
+		if update.Message != nil {
+			newMessage(update,db)
 		}
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Вам было предоставленно доступ к библиотеке!")
-		bot.Send(msg)
-		log.Println(dataBase.IsUserExist(db,admin))
-		log.Printf("%+v\n", update)
+		if update.CallbackQuery != nil {
+			//newQuery(update,db)
+		}
+	*/
 	}
 }
+
 
 
 func botConnect () *tgbotapi.BotAPI {
@@ -79,6 +82,7 @@ func botConnect () *tgbotapi.BotAPI {
 	if err != nil {
 		log.Fatal("Can't connect set webhook of telegram-bot")
 	}
+	log.Println("Webhook set")
 	return bot
 }
 
