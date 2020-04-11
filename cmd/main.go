@@ -32,19 +32,19 @@ func main () {
 	port := os.Getenv(betypes.EnvPort)
 
 
-	start(":"+port)
+	start(betypes.BotWebhook + ":" + port)
 }
 
 
 
 
 func start (addr string) {
-
+	log.Println(addr)
 	go log.Fatal(http.ListenAndServe(addr,  nil))
 
 
 	db := dataBase.Connect()
-	bot := botConnect()
+	bot := botConnect(addr)
 
 
 
@@ -68,14 +68,14 @@ func start (addr string) {
 
 
 
-func botConnect () *tgbotapi.BotAPI {
+func botConnect (addr string) *tgbotapi.BotAPI {
 	bot, err := tgbotapi.NewBotAPI(betypes.BotToken)
 	if err != nil {
 		log.Fatal("Can't connect to bot api")
 	}
 	log.Printf("Authorized bot api - %s", bot.Self.UserName)
 
-	_, err = bot.SetWebhook(tgbotapi.NewWebhook(betypes.BotWebhook))
+	_, err = bot.SetWebhook(tgbotapi.NewWebhook(addr + "/" + betypes.BotToken))
 	if err != nil {
 		log.Fatal("Can't connect set webhook of telegram-bot")
 	}
