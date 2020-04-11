@@ -3,39 +3,36 @@ package main
 import (
 	"alifLibrary/betypes"
 	dataBase "alifLibrary/crud"
-	"flag"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
-	"net"
 	"net/http"
 	"os"
 )
 
 
-var (
+/*var (
 	hostF = flag.String("host", "", "Server host")
 	portF = flag.String("port", "", "Server port")
 )
-
+*/
 func main () {
 	log.Print("start application")
-	flag.Parse()
+	//flag.Parse()
 
-	host, ok := FlagOrEnv(*hostF, betypes.EnvHost)
+	/*host, ok := FlagOrEnv(*hostF, betypes.EnvHost)
 	if !ok {
 		log.Panic("can't get host")
 	}
-
-	port, ok := FlagOrEnv(*portF, betypes.EnvPort)
-	if !ok {
-		log.Panic("can't get port")
-	}
-
-	addr := net.JoinHostPort(host, port)
+		addr := net.JoinHostPort(host, port)
 	log.Println(host,port)
 
-	start(addr)
+	*/
+
+	port := os.Getenv(betypes.EnvPort)
+
+
+	start(":"+port)
 }
 
 
