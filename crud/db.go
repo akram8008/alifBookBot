@@ -46,9 +46,9 @@ func Connect () *sql.DB {
 }
 
 
-func IsUserExist (db *sql.DB, checkUser betypes.User) (betypes.User,error) {
-	user := betypes.User{}
-	err := db.QueryRow(userExists, checkUser.ChatId).Scan(&user.Id,&user.ChatId,&user.FirstName,&user.Phone,&user.Role)
+func IsUserExist (db *sql.DB, user betypes.User) (betypes.User,error) {
+    log.Println("Checking the user: ",user, " in dataBase")
+	err := db.QueryRow(userExists, user.ChatId).Scan(&user.Id,&user.ChatId,&user.FirstName,&user.Phone,&user.Role)
 
 	if err == nil {
 		return user,nil
