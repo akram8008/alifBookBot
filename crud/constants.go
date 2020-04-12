@@ -10,6 +10,8 @@ createTable = `CREATE TABLE IF NOT EXISTS   users (
 );
 `
 
-insertNewUser = `INSERT INTO users(firstname, phone, role)  VALUES (?, ?, ?);`
+insertNewUser = `INSERT INTO users(chatid, firstname, phone, role)  VALUES (?, ?, ?, ?);`
 userExists = `SELECT * FROM users WHERE chatid=?;`
+updateUser = `UPDATE users SET chatid=?, firstname=?, phone=?, role=?  WHERE chatid = ?;`
+
 )

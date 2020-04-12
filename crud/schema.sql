@@ -8,4 +8,15 @@ CREATE TABLE IF NOT EXISTS users
 );
 
 
+insertNewUser = `INSERT INTO users(chatid, firstname, phone, role)  VALUES (?, ?, ?, ?);`
+
+UPDATE users SET chatid=?, firstname=?, phone=?, role=?  WHERE chatid = ?;
+
+
 SELECT * FROM users WHERE chatid=5;
+
+
+
+UPDATE firstname, phone, role FROM users WHERE chatid=;
+
+drop table users;

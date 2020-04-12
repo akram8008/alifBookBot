@@ -30,12 +30,12 @@ func Connect () *sql.DB {
 		Role:betypes.AdminRole,
 	}
 
-	_,ok,err := IsUserExist(db,admin)
+	admin,err = IsUserExist(db,admin)
 	if err!=nil {
 		log.Fatal("Can not check main admin for exists")
 	}
 
-	if !ok {
+	if admin.Role!="admin" {
 		err := InsertUser (db,admin)
 		if err!=nil {
 			log.Fatal("Can not insert main admin")
@@ -46,21 +46,26 @@ func Connect () *sql.DB {
 }
 
 
-func IsUserExist (db *sql.DB, chechUser betypes.User) (betypes.User,bool,error) {
+func IsUserExist (db *sql.DB, checkUser betypes.User) (betypes.User,error) {
 	user := betypes.User{}
-	err := db.QueryRow(userExists, chechUser.ChatId).Scan(&user.Id,&user.ChatId,&user.FirstName,&user.Phone,&user.Role)
+	err := db.QueryRow(userExists, checkUser.ChatId).Scan(&user.Id,&user.ChatId,&user.FirstName,&user.Phone,&user.Role)
 
 	if err == nil {
-		return user,true,nil
+		return user,nil
 	}
 	if err == sql.ErrNoRows {
-		return betypes.User{},false,nil
+		return betypes.User{},nil
 	}
-	return betypes.User{},false,err
+	return betypes.User{},err
 }
 
 
 func InsertUser (db *sql.DB,user betypes.User) error {
-	 _, err := db.Exec(insertNewUser,user.FirstName,user.Phone,user.Role)
+	 _, err := db.Exec(insertNewUser,user.ChatId, user.FirstName, user.Phone, user.Role)
 	 return err
+}
+
+func UpdateUser (db *sql.DB,user betypes.User) error {
+	_, err := db.Exec(updateUser,user.ChatId, user.FirstName, user.Phone, user.Role, user.ChatId)
+	return err
 }
