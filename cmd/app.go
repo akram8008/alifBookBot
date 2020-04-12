@@ -9,9 +9,9 @@ import (
 )
 
 func newMessage (update tgbotapi.Update,bot *tgbotapi.BotAPI, db *sql.DB) {
-	log.Println("New message from: ", update.Message.From.FirstName)
 	user,err := getInfoUser(update,bot,db)
 	if err!=nil {return}
+	log.Println("New message from: ", user)
 
 	if user.Role == "admin" {
 		//adminFunc(update, bot, db, user)
