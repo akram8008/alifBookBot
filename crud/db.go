@@ -30,7 +30,7 @@ func Connect () *sql.DB {
 		Role:betypes.AdminRole,
 	}
 
-	admin,err = InfoUserDB(db,admin)
+	err = InfoUserDB(db,&admin)
 	if err!=nil {
 		log.Fatal("Can not check main admin for exists by error:",err)
 	}
@@ -46,26 +46,26 @@ func Connect () *sql.DB {
 }
 
 
-func InfoUserDB(db *sql.DB, user betypes.User) (betypes.User,error) {
+func InfoUserDB(db *sql.DB, user *betypes.User) error {
     log.Println("Checking the user: ",user, " in dataBase")
  	row, err := db.Query(userExists, user.ChatId)
 	if err!=nil {
-		return betypes.User{}, err
+		return err
 	}
 
 	defer row.Close()
  	if row.Next() {
 		err = row.Scan(&user.Id, &user.ChatId, &user.FirstName, &user.Phone, &user.Role)
 		if err != nil {
-			return user, err
+			return  err
 		}
-		return user, nil
 	}
-	return  user,nil
+	return  nil
 }
 
 
 func InsertUser (db *sql.DB,user betypes.User) error {
+	log.Println("insertong new user:",user)
 	 _, err := db.Exec(insertNewUser,user.ChatId, user.FirstName, user.Phone, user.Role)
 	 return err
 }

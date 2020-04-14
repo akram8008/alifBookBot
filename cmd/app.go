@@ -75,7 +75,7 @@ func updateUser (user betypes.User, bot *tgbotapi.BotAPI,db *sql.DB) {
 
 func getInfoUser (update tgbotapi.Update,bot *tgbotapi.BotAPI, db *sql.DB) (betypes.User, error) {
 	user := betypes.User{ChatId:update.Message.Chat.ID}
-	user, err := dataBase.InfoUserDB(db,user)
+	err := dataBase.InfoUserDB(db,&user)
 	if err != nil {
 		log.Println("Can not connect to server ")
 		sendErrorMessage (bot,update.Message.Chat.ID)
