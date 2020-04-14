@@ -35,10 +35,10 @@ func Connect () *sql.DB {
 		log.Fatal("Can not check main admin for exists by error:",err)
 	}
 
-	if admin.Role!="admin" {
+	if admin.Id==0 {
 		err := InsertUser (db,admin)
 		if err!=nil {
-			log.Fatal("Can not insert main admin")
+			log.Fatal("Can not insert main admin by the error : ",err)
 		}
 	}
 
@@ -65,12 +65,13 @@ func InfoUserDB(db *sql.DB, user *betypes.User) error {
 
 
 func InsertUser (db *sql.DB,user betypes.User) error {
-	log.Println("insertong new user:",user)
+	 log.Println("inserting new user:",user)
 	 _, err := db.Exec(insertNewUser,user.ChatId, user.FirstName, user.Phone, user.Role)
 	 return err
 }
 
 func UpdateUser (db *sql.DB,user betypes.User) error {
+	log.Println("Updating information of user:",user)
 	_, err := db.Exec(updateUser,user.ChatId, user.FirstName, user.Phone, user.Role, user.ChatId)
 	return err
 }

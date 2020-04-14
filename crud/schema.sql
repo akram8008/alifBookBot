@@ -20,3 +20,9 @@ SELECT * FROM users WHERE chatid=5;
 UPDATE firstname, phone, role FROM users WHERE chatid=;
 
 drop table users;
+
+
+
+
+UPDATE users SET chatid=?, firstname=?, phone=?, role=?  WHERE chatid = ?;
+

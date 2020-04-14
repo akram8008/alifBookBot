@@ -12,14 +12,14 @@ type User struct  {
 
 
 
-var libraryButton = tgbotapi.NewReplyKeyboard(tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton(TextWantLibrary)),)
+var LibraryButton = tgbotapi.NewReplyKeyboard(tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton(TextWantLibrary)),)
 
 var ContactButton = tgbotapi.NewReplyKeyboard(tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButtonContact(TextContactSend)),)
 
 var AddUserMenu = tgbotapi.NewInlineKeyboardMarkup(
 	tgbotapi.NewInlineKeyboardRow(
-		tgbotapi.NewInlineKeyboardButtonData(TextAccept,TextQueryYesId),
-		tgbotapi.NewInlineKeyboardButtonData(TextReject,TextQueryYesId),
+		tgbotapi.NewInlineKeyboardButtonData(TextAccept,TextAddingUserQueryYes),
+		tgbotapi.NewInlineKeyboardButtonData(TextReject,TextAddingUserQueryNo),
 	),
 )
 

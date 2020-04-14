@@ -37,7 +37,7 @@ func start (bot *tgbotapi.BotAPI,db *sql.DB) {
 			newMessage(update,bot,db)
 		}
 		if update.CallbackQuery != nil {
-			//newQuery(update,db)
+			newQuery(update,bot,db)
 		}
 	}
 }
@@ -48,13 +48,13 @@ func botConnect () *tgbotapi.BotAPI {
 	log.Println("Connecting to bot api! ")
 	bot, err := tgbotapi.NewBotAPI(betypes.BotToken)
 	if err != nil {
-		log.Fatal("Can't connect to bot api")
+		log.Fatal("Can't connect to bot api by the error: ",err)
 	}
 	log.Printf("Authorized bot api - %s", bot.Self.UserName)
 
 	_, err = bot.SetWebhook(tgbotapi.NewWebhook(betypes.BotWebhook))
 	if err != nil {
-		log.Fatal("Can't connect set webhook of telegram-bot",err)
+		log.Fatal("Can't connect set webhook of telegram-bot by the error: ",err)
 	}
 	log.Println("Webhook set")
 	return bot
