@@ -10,7 +10,7 @@ import (
 )
 
 func newMessage (update tgbotapi.Update,bot *tgbotapi.BotAPI, db *sql.DB) {
-	user,err := getInfoUser(update,bot,db)
+	user,err := getInfoUser(update.Message.Chat.ID,bot,db)
 	if err!=nil {return}
 	log.Println("New message from: ", user, " Message: ",update.Message.Text)
 
@@ -24,7 +24,7 @@ func newMessage (update tgbotapi.Update,bot *tgbotapi.BotAPI, db *sql.DB) {
 }
 
 func newQuery(update tgbotapi.Update, bot *tgbotapi.BotAPI, db *sql.DB) {
-	 admin,err := getInfoUser(update,bot,db)
+	 admin,err := getInfoUser(update.CallbackQuery.Message.Chat.ID,bot,db)
  	 if err!=nil {
  	 	return}
 	 log.Println("New command from: ", admin, " Data:",update.CallbackQuery.Data)
@@ -138,12 +138,12 @@ func updateUser (user betypes.User, bot *tgbotapi.BotAPI,db *sql.DB) {
 	}
 }
 
-func getInfoUser (update tgbotapi.Update,bot *tgbotapi.BotAPI, db *sql.DB) (betypes.User, error) {
-	user := betypes.User{ChatId:update.Message.Chat.ID}
+func getInfoUser (chatId int64,bot *tgbotapi.BotAPI, db *sql.DB) (betypes.User, error) {
+	user := betypes.User{ChatId:chatId}
 	err := dataBase.InfoUserDB(db,&user)
 	if err != nil {
 		log.Println("Can not connect to server by the error",err)
-		sendErrorMessage (bot,update.Message.Chat.ID)
+		sendErrorMessage (bot,chatId)
 		return betypes.User{},err
 	}
 	return user,nil
@@ -187,7 +187,7 @@ func adminFunc (message string, bot *tgbotapi.BotAPI, db *sql.DB, admin betypes.
 		}
 	}else {
 		msg := tgbotapi.NewMessage(admin.ChatId, betypes.TextWelcome)
-		msg.ReplyMarkup = betypes.TextContactSend
+		msg.ReplyMarkup = betypes.LibraryButton
 		if _,err := bot.Send(msg); err!=nil {
 			log.Println("Can not send message to admin error: ",err)
 			return
