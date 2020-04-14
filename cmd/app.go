@@ -39,11 +39,7 @@ func newQuery(update tgbotapi.Update, bot *tgbotapi.BotAPI, db *sql.DB) {
 		   Phone:     update.CallbackQuery.Message.Contact.PhoneNumber,
 		   Role:      "user",
 	   }
-	   err := dataBase.UpdateUser(db,user)
-	   if err!=nil {
-	   	sendErrorMessage(bot,admin.ChatId)
-	   	return
-	   }
+		updateUser(user,bot,db)
 
 		msg := tgbotapi.NewMessage(user.ChatId, betypes.TextAccepted)
 		msg.ReplyMarkup = betypes.LibraryButton
@@ -65,11 +61,7 @@ func newQuery(update tgbotapi.Update, bot *tgbotapi.BotAPI, db *sql.DB) {
 			Phone:     update.CallbackQuery.Message.Contact.PhoneNumber,
 			Role:      "",
 		}
-		err := dataBase.UpdateUser(db,user)
-		if err!=nil {
-			sendErrorMessage(bot,admin.ChatId)
-			return
-		}
+		updateUser(user,bot,db)
 
 		msg := tgbotapi.NewMessage(user.ChatId, betypes.TextRejected)
 		msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
@@ -145,6 +137,14 @@ func getInfoUser (chatId int64,bot *tgbotapi.BotAPI, db *sql.DB) (betypes.User, 
 		log.Println("Can not connect to server by the error",err)
 		sendErrorMessage (bot,chatId)
 		return betypes.User{},err
+	}
+	if user.Id == 0 {
+		err := dataBase.InsertUser(db,user)
+		if err != nil {
+			log.Println("Can not insert new user to database error:",err)
+			sendErrorMessage (bot,chatId)
+			return betypes.User{},err
+		}
 	}
 	return user,nil
 }
