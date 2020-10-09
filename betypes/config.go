@@ -8,5 +8,6 @@ const (
 	AdminFirstName = ""
 	AdminPhone     = ""
 	AdminRole      = "admin"
+	MySecretKey    = "secretKey"
 )
 
