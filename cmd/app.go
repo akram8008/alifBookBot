@@ -17,7 +17,7 @@ func newMessage (update tgbotapi.Update,bot *tgbotapi.BotAPI, db *sql.DB) {
 	log.Println("New message from: ", user, " Message: ",update.Message.Text)
 
 	if user.Role == betypes.TextAdminRole {
-		adminFunc(update.Message.Text, bot, db, user)
+		authorized(update.Message.Text, bot, db, user)
 	}else if user.Role == betypes.TextUserRole{
 		authorized (update.Message.Text,bot,db,user)
 	}else {
@@ -174,28 +174,7 @@ func authorized (message string, bot *tgbotapi.BotAPI, db *sql.DB, user betypes.
 	}
 }
 
-func adminFunc (message string, bot *tgbotapi.BotAPI, db *sql.DB, admin betypes.User) {
-	if message == betypes.TextWantLibrary{
-		token := "NEWADMIN"/*makeToken (string(update.Message.From.ID),update.Message.From.FirstName,update.Message.From.UserName,"admin")*/
-		if true /*err == nil*/ {
-			msg := tgbotapi.NewMessage(admin.ChatId, fmt.Sprintf(betypes.TextGiveToken,token))
-			log.Println(token)
-			if _,err := bot.Send(msg); err!=nil {
-				log.Println("Can not send message to admin error: ",err)
-				return
-			}
-		}else {
-			sendErrorMessage(bot,admin.ChatId)
-		}
-	}else {
-		msg := tgbotapi.NewMessage(admin.ChatId, betypes.TextWelcome)
-		msg.ReplyMarkup = betypes.LibraryButton
-		if _,err := bot.Send(msg); err!=nil {
-			log.Println("Can not send message to admin error: ",err)
-			return
-		}
-	}
-}
+
 
 func sendErrorMessage (bot *tgbotapi.BotAPI, chatId int64) {
 	msg := tgbotapi.NewMessage(chatId, betypes.TextServerNotResponse)
@@ -215,7 +194,7 @@ func generateJWT (name,role string) (string,error) {
 	claims["role"] = role
 	claims["exp"] = time.Now().Add(time.Hour * 10).Unix()
 
-	tokenString, err := token.SignedString(betypes.MySecretKey)
+	tokenString, err := token.SignedString([]byte(betypes.MySecretKey))
 	if err!=nil {
 		log.Println("Can not generate token: ",err)
 	    return "", err
