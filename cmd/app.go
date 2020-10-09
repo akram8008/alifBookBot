@@ -155,8 +155,12 @@ func authorized (message string, bot *tgbotapi.BotAPI, db *sql.DB, user betypes.
 	if message == betypes.TextWantLibrary{
 		token,err := generateJWT(user.FirstName, user.Role)
 		if err==nil {
-			msg := tgbotapi.NewMessage(user.ChatId, fmt.Sprintf(betypes.TextGiveToken,token))
-			log.Println(token)
+			msg := tgbotapi.NewMessage(user.ChatId, betypes.TextGiveToken)
+			msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
+				tgbotapi.NewInlineKeyboardRow(
+					tgbotapi.NewInlineKeyboardButtonURL(betypes.LibraryName,fmt.Sprintf(betypes.LibraryUrl,token),),))
+			
+			log.Println("Got a token: ", token)
 			if _,err := bot.Send(msg); err!=nil {
 				log.Println("Can not send message to admin error: ",err)
 				return
@@ -174,7 +178,29 @@ func authorized (message string, bot *tgbotapi.BotAPI, db *sql.DB, user betypes.
 	}
 }
 
-
+//func adminFunc (message string, bot *tgbotapi.BotAPI, db *sql.DB, admin betypes.User) {
+//	if message == betypes.TextWantLibrary{
+//		token := "NEWADMIN"/*makeToken (string(update.Message.From.ID),update.Message.From.FirstName,update.Message.From.UserName,"admin")*/
+//		if true /*err == nil*/ {
+//			msg := tgbotapi.NewMessage(admin.ChatId, fmt.Sprintf(betypes.TextGiveToken,token))
+//			log.Println(token)
+//			if _,err := bot.Send(msg); err!=nil {
+//				log.Println("Can not send message to admin error: ",err)
+//				return
+//			}
+//		}else {
+//			sendErrorMessage(bot,admin.ChatId)
+//		}
+//	}else {
+//		msg := tgbotapi.NewMessage(admin.ChatId, betypes.TextWelcome)
+//		msg.ReplyMarkup = betypes.LibraryButton
+//		if _,err := bot.Send(msg); err!=nil {
+//			log.Println("Can not send message to admin error: ",err)
+//			return
+//		}
+//	}
+//}
+//
 
 
 func sendErrorMessage (bot *tgbotapi.BotAPI, chatId int64) {
