@@ -176,6 +176,7 @@ func authorized (message string, bot *tgbotapi.BotAPI, db *sql.DB, user betypes.
 
 
 
+
 func sendErrorMessage (bot *tgbotapi.BotAPI, chatId int64) {
 	msg := tgbotapi.NewMessage(chatId, betypes.TextServerNotResponse)
 	_, err := bot.Send(msg)
@@ -185,7 +186,7 @@ func sendErrorMessage (bot *tgbotapi.BotAPI, chatId int64) {
 }
 
 func generateJWT (name,role string) (string,error) {
-	token := jwt.New(jwt.SigningMethodES256)
+	token := jwt.New(jwt.SigningMethodHS256)
 
 	claims := token.Claims.(jwt.MapClaims)
 
