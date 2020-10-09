@@ -18,7 +18,7 @@ var ContactButton = tgbotapi.NewReplyKeyboard(tgbotapi.NewKeyboardButtonRow(tgbo
 
 var AddUserMenu = tgbotapi.NewInlineKeyboardMarkup(
 	tgbotapi.NewInlineKeyboardRow(
-		tgbotapi.NewInlineKeyboardButtonData(TextAccept,TextAddingUserQueryYes),
+		tgbotapi.NewInlineKeyboardButtonData(TextAccept,/*TextAddingUserQueryYes*/"http://www.google.ru"),
 		tgbotapi.NewInlineKeyboardButtonData(TextReject,TextAddingUserQueryNo),
 	),
 )
