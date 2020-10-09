@@ -7,6 +7,8 @@ import (
 	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"log"
+	jwt "github.com/dgrijalva/jwt-go"
+	"time"
 )
 
 func newMessage (update tgbotapi.Update,bot *tgbotapi.BotAPI, db *sql.DB) {
@@ -151,8 +153,8 @@ func getInfoUser (chatId int64,bot *tgbotapi.BotAPI, db *sql.DB) (betypes.User, 
 
 func authorized (message string, bot *tgbotapi.BotAPI, db *sql.DB, user betypes.User) {
 	if message == betypes.TextWantLibrary{
-		token := "NEWUSER"/*,err := makeToken (string(update.Message.From.ID),update.Message.From.FirstName,update.Message.From.UserName,"user")*/
-		if true/*err==nil*/ {
+		token,err := generateJWT(user.FirstName, user.Role)
+		if err==nil {
 			msg := tgbotapi.NewMessage(user.ChatId, fmt.Sprintf(betypes.TextGiveToken,token))
 			log.Println(token)
 			if _,err := bot.Send(msg); err!=nil {
@@ -203,5 +205,21 @@ func sendErrorMessage (bot *tgbotapi.BotAPI, chatId int64) {
 	}
 }
 
+func generateJWT (name,role string) (string,error) {
+	token := jwt.New(jwt.SigningMethodES256)
 
+	claims := token.Claims.(jwt.MapClaims)
+
+	claims["authorized"] = true
+	claims["user"] = name
+	claims["role"] = role
+	claims["exp"] = time.Now().Add(time.Hour * 10).Unix()
+
+	tokenString, err := token.SignedString(betypes.MySecretKey)
+	if err!=nil {
+		log.Println("Can not generate token: ",err)
+	    return "", err
+	}
+	return tokenString, nil
+}
 
