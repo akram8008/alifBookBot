@@ -9,5 +9,7 @@ const (
 	AdminPhone     = ""
 	AdminRole      = "admin"
 	MySecretKey    = "secretKey"
+	LibraryUrl     = "https://exapmle.com/?data=%s"
+	LibraryName    = "StoreBook"
 )
 
