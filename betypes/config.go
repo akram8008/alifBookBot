@@ -9,7 +9,7 @@ const (
 	AdminPhone     = ""
 	AdminRole      = "admin"
 	MySecretKey    = "secretKey"
-	LibraryUrl     = "https://exapmle.com/?data=%s"
+	LibraryUrl     = "https://git-webclient.herokuapp.com/api/enter/%s"
 	LibraryName    = "StoreBook"
 )
 
