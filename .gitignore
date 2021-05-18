@@ -1,2 +1,2 @@
 *.idea
-betypes/configApi.go
+/betypes/configApi.go
