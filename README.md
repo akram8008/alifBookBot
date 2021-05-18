@@ -1,6 +1,6 @@
 # Электронная библиотека
     
-      Электронная библиотека с ограничениями доступа. Процесс аутентификации осуществляется через телеграмм-бот.
+  Электронная библиотека с ограничениями доступа. Процесс аутентификации осуществляется через телеграмм-бот.
     
 Пользователь:
       1. Регистрация (боту отправляется запрос на регистрацию в электронной библиотеке. И бот перенаправляет администратору)
@@ -20,7 +20,7 @@
 
 # Electronic Library
     
-      Electronic library with access restrictions. The authentication process is carried out via a telegram bot.
+   Electronic library with access restrictions. The authentication process is carried out via a telegram bot.
     
 User:
       1. Registration (a request for registration in the electronic library is sent to the bot. And the bot redirects to the administrator)
